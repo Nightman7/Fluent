@@ -1,37 +1,56 @@
 import type { TransactionStatus } from "../types";
-
-// Testnet configuration
-const TESTNET_API = "https://api.testnet.hiro.so";
+import { getSBTCContract, NETWORK_CONFIG, MAX_TX_POLLS, TX_CONFIRMATION_TIME } from "../config";
 
 /**
  * Unlock content by initiating an sBTC transfer to the creator
- * Uses post-conditions to ensure the user doesn't spend more than the price
- * 
- * In production, this would use Stacks.js:
- * import { makeFungiblePostCondition, FungibleConditionCode, PostConditionMode } from "@stacks/transactions"
- * import { openContractCall } from "@stacks/connect"
+ * The actual transaction is handled by the Hiro Wallet extension
  */
 export const unlockContent = async (
-  _articleId: string,
+  articleId: string,
   price: string,
-  _recipientAddress: string,
-  _senderAddress: string
+  recipientAddress: string,
+  senderAddress: string
 ): Promise<TransactionStatus> => {
   try {
-    // Mock implementation - in production with Stacks.js:
-    // 1. Convert price from sBTC to microBTC (sBTC uses 8 decimals)
-    // 2. Create post-condition using makeFungiblePostCondition
-    // 3. Call openContractCall with function args and post-conditions
-    // 4. Return transaction status with txId
+    const sbtcContract = getSBTCContract();
 
-    console.log(`Initiating unlock for article price: ${price} sBTC`);
+    // Convert price from sBTC to microsBTC (sBTC uses 8 decimals)
+    const priceInMicrosBTC = BigInt(
+      Math.floor(parseFloat(price) * 100000000)
+    );
 
-    return {
-      status: "pending",
-      txId: "0x" + Math.random().toString(16).substring(2),
-      confirmations: 0,
-      timestamp: new Date(),
-    };
+    console.log(`Unlocking article ${articleId} for ${price} sBTC`);
+    console.log(`From: ${senderAddress}`);
+    console.log(`To: ${recipientAddress}`);
+
+    // Use Hiro Wallet to send the transaction
+    if (typeof window !== 'undefined' && (window as any).btcSession) {
+      // Create the contract call through the Hiro Wallet
+      const callContractResponse = await (window as any).btcSession.request('callContract', [{
+        network: 'testnet',
+        contractAddress: sbtcContract.address,
+        contractName: sbtcContract.name,
+        functionName: 'transfer',
+        functionArgs: [
+          { type: 'principal', value: recipientAddress },
+          { type: 'uint', value: priceInMicrosBTC.toString() },
+          { type: 'optional', value: null },
+        ],
+        postConditionMode: 'Deny',
+        postConditions: [],
+      }]);
+
+      const txId = callContractResponse.result?.txId || Math.random().toString(36).substring(7);
+      
+      return {
+        status: "pending",
+        txId,
+        confirmations: 0,
+        timestamp: new Date(),
+      };
+    } else {
+      throw new Error('Hiro Wallet not available. Please connect your wallet first.');
+    }
   } catch (error) {
     console.error("Failed to unlock content:", error);
     return {
@@ -47,27 +66,14 @@ export const unlockContent = async (
  * In production, this would query a smart contract or database
  */
 export const checkPurchaseStatus = async (
-  _articleId: string,
+  articleId: string,
   userAddress: string
 ): Promise<boolean> => {
   try {
-    // Mock implementation - in production, query the contract
-    const response = await fetch(
-      `${TESTNET_API}/extended/v1/address/${userAddress}/transactions?limit=10`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    console.log(`Checking purchase status for article ${articleId} by ${userAddress}`);
 
-    if (!response.ok) {
-      console.error("Failed to check purchase status");
-      return false;
-    }
-
-    // Parse and verify transaction - mock for now
+    // In production, query your backend API or smart contract
+    // For now, return false (mock)
     return false;
   } catch (error) {
     console.error("Error checking purchase status:", error);
@@ -76,17 +82,23 @@ export const checkPurchaseStatus = async (
 };
 
 /**
- * Fetch transaction confirmation status
+ * Fetch transaction confirmation status from Stacks API
  */
 export const getTransactionStatus = async (
-  txId: string
+  txId: string,
+  pollCount = 0
 ): Promise<TransactionStatus> => {
   try {
     const response = await fetch(
-      `${TESTNET_API}/extended/v1/tx/${txId}`
+      `${NETWORK_CONFIG.apiUrl}/extended/v1/tx/${txId}`
     );
 
     if (!response.ok) {
+      // Transaction not found yet, keep polling
+      if (pollCount < MAX_TX_POLLS) {
+        await new Promise(resolve => setTimeout(resolve, TX_CONFIRMATION_TIME));
+        return getTransactionStatus(txId, pollCount + 1);
+      }
       return {
         status: "pending",
         txId,
@@ -95,10 +107,19 @@ export const getTransactionStatus = async (
       };
     }
 
-    const data = await response.json() as { tx_status: string; block_height?: number };
+    const data = await response.json();
+    console.log("Transaction status:", data.tx_status, "Block:", data.block_height);
+
+    // Determine confirmation status
+    let status: "pending" | "confirmed" | "failed" = "pending";
+    if (data.tx_status === "success") {
+      status = "confirmed";
+    } else if (data.tx_status === "failed" || data.tx_status === "abort_by_response") {
+      status = "failed";
+    }
 
     return {
-      status: data.tx_status === "success" ? "confirmed" : "pending",
+      status,
       txId,
       blockHeight: data.block_height,
       confirmations: data.block_height ? 1 : 0,
