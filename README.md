@@ -1,68 +1,95 @@
 # Fluent
 
-Bitcoin-native media protocol on Stacks where readers unlock premium content with sBTC and creators monetize with transparent onchain proof.
+**Fluent** is a Bitcoin-native media MVP built on **Stacks**, where readers unlock premium content with **sBTC** and creators monetize with transparent, on-chain proof of payment.
 
 Live app: https://fluent-sage.vercel.app
 
+---
+
+## About
+
+Independent writers and small publications often rely on subscriptions, ads, or centralized platforms—each adding friction, fees, or platform risk.
+
+Fluent explores a simpler model:
+
+- **Reader experience:** connect a wallet, browse content, and unlock an article with a small sBTC payment.
+- **Creator experience:** receive payments directly to a Stacks address with a verifiable transaction trail.
+- **Bitcoin alignment:** payments run on **Stacks (Bitcoin L2)**, using **sBTC** for fast settlement and low-friction unlocks.
+
+This repo is currently an **MVP** meant to validate UX, trust surfaces, and the unlock flow end-to-end.
+
+---
+
 ## At a glance
 
-- Problem: high-friction monetization for independent writers
-- Solution: wallet-native pay-to-unlock publishing on Bitcoin rails
-- Audience: readers who want premium content, creators who need direct revenue
-- Current state: functional MVP with unlock flow, trust surfaces, and utility UX
+- **Problem:** high-friction monetization for independent writers
+- **Solution:** wallet-native pay-to-unlock publishing on Bitcoin rails
+- **Audience:** readers who want premium content, creators who want direct revenue
+- **State:** functional MVP with wallet connect + unlock flow + transaction status
+
+---
 
 ## Key features
 
 ### Reader utility
 
-- Connect Hiro wallet and fetch STX and sBTC balances
-- Browse locked and unlocked content
-- Search and filter by title, author, and category
-- Save articles into a reading list
-- Unlock with sBTC in a wallet-confirmed flow
+- Connect Hiro wallet and fetch **STX** + **sBTC** balances
+- Browse locked/unlocked content
+- Search + filter articles (title/author/category)
+- Save articles to a reading list
+- Unlock paid content with a wallet-confirmed sBTC transfer
 - View unlock history with explorer links
 
-### Trust and conversion
+### Trust + conversion UX
 
 - Onboarding progress strip for clear next steps
-- Transaction verification status component
-- Security and fee transparency panel
-- UI state updates after successful unlock
+- Transaction verification/status component
+- Security & fee transparency panel
+- UI updates after successful unlock
 
-### Creator-facing signals
+### Creator-facing signals (early)
 
-- Creator spotlight metrics section
-- Clear unlock pricing in feed and paywall
-- Foundation for pricing strategy and analytics features
+- Creator spotlight / metrics section
+- Clear unlock pricing in feed + paywall
+- Foundation for future pricing + analytics features
 
-## Product flow
+---
 
-1. Connect wallet
-2. Choose article
-3. Confirm unlock payment in wallet
-4. Track transaction verification
-5. Access unlocked article and proof history
+## How unlocking works (high-level)
+
+1. Reader connects Hiro Wallet
+2. Reader selects a locked article
+3. Reader confirms a **sBTC token transfer** in-wallet
+4. App tracks confirmation via the Stacks API
+5. Once confirmed, the article is treated as unlocked
+
+**Safety:** transfers are intended to include **post-conditions** so the user can’t spend more than the unlock price.
+
+---
 
 ## Tech stack
 
-- React
-- TypeScript
+- React + TypeScript
 - Vite
-- Tailwind CSS v4
+- Tailwind CSS (v4)
 - Hiro wallet session API
 - Stacks testnet integration
 - Vercel deployment
+
+---
 
 ## Project structure
 
 | Path | Purpose |
 | --- | --- |
-| src/App.tsx | Main product shell and sections |
-| src/index.css | Global visual system and animations |
-| src/components/ | UI components for feed, wallet, paywall, status |
-| src/context/WalletContext.tsx | Wallet state and balance management |
-| src/utils/contractInteractions.ts | Unlock and tx status interactions |
-| src/types/index.ts | Shared application types |
+| `src/App.tsx` | Main product shell and sections |
+| `src/index.css` | Global visual system and animations |
+| `src/components/` | UI components for feed, wallet, paywall, status |
+| `src/context/WalletContext.tsx` | Wallet state + balance management |
+| `src/utils/contractInteractions.ts` | Unlock + tx status interactions |
+| `src/types/index.ts` | Shared application types |
+
+---
 
 ## Quick start
 
@@ -70,7 +97,7 @@ Live app: https://fluent-sage.vercel.app
 
 - Node.js 18+
 - npm
-- Hiro Wallet extension (for unlock flow testing)
+- Hiro Wallet extension (for testing the unlock flow)
 
 ### Install
 
@@ -84,48 +111,58 @@ npm install
 npm run dev
 ```
 
-### Build production bundle
+### Build
 
 ```bash
 npm run build
 ```
 
-### Preview production build
+### Preview build
 
 ```bash
 npm run preview
 ```
 
+---
+
+## Environment variables
+
+Copy the example file and edit as needed:
+
+```bash
+cp .env.local.example .env.local
+```
+
+Example values live in `.env.local.example`.
+
+---
+
 ## Network config
 
-- Default network: Stacks testnet
-- sBTC token contract: SP3DX3H4FEYZJZ586MFBS25ZM3FTRELAY2RYASF3.sbtc-token
+- Default network: **Stacks testnet**
+- sBTC token contract (testnet):
+  `SP3DX3H4FEYZJZ586MFBS25ZM3FTRELAY2RYASF3.sbtc-token`
 
-## GitHub About content (copy and paste)
+See `src/config.ts`.
 
-### Description
-
-Bitcoin-native media protocol on Stacks where readers unlock premium content with sBTC and creators monetize with transparent onchain proof.
-
-### Website
-
-https://fluent-sage.vercel.app
-
-### Topics
-
-stacks, bitcoin, sbtc, web3, react, typescript, paywall, creator-economy, blockchain, vercel
+---
 
 ## Roadmap
 
-- Creator dashboard for publishing and pricing
-- Conversion analytics and unlock funnel insights
-- Bundles and creator access passes
+- Creator dashboard (publish + price + manage content)
+- Conversion analytics + unlock funnel insights
+- Bundles / creator passes
 - Reader alerts and watchlists
 - Mainnet-ready rollout plan
+- Optional: IPFS / decentralized storage integration
+
+---
 
 ## Contributing
 
 Open an issue first for product ideas, UI improvements, or integration bugs before sending a pull request.
+
+---
 
 ## References
 
