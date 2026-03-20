@@ -1,86 +1,84 @@
 # Fluent
 
-Bitcoin-native media protocol on Stacks where readers unlock premium content with sBTC and creators monetize directly.
+Bitcoin-native media protocol on Stacks where readers unlock premium content with sBTC and creators monetize with transparent onchain proof.
 
 Live app: https://fluent-sage.vercel.app
 
-## Why Fluent
+## At a glance
 
-Fluent is designed to make paid publishing on Bitcoin practical and transparent.
+- Problem: high-friction monetization for independent writers
+- Solution: wallet-native pay-to-unlock publishing on Bitcoin rails
+- Audience: readers who want premium content, creators who need direct revenue
+- Current state: functional MVP with unlock flow, trust surfaces, and utility UX
 
-- Reader-first unlock flow with wallet-native confirmation
-- Creator monetization with onchain payment proof
-- Trust-focused UX with clear transaction visibility
-- Minimal, high-clarity interface with animated ambient gradients
+## Key features
 
-## Current product capabilities
+### Reader utility
 
-### Reader experience
-
-- Connect Hiro wallet and fetch STX/sBTC balances
-- Browse locked and unlocked articles
+- Connect Hiro wallet and fetch STX and sBTC balances
+- Browse locked and unlocked content
 - Search and filter by title, author, and category
 - Save articles into a reading list
-- Unlock articles with sBTC through wallet flow
+- Unlock with sBTC in a wallet-confirmed flow
 - View unlock history with explorer links
 
-### Creator and trust surfaces
+### Trust and conversion
 
-- Creator spotlight section with monetization metrics
+- Onboarding progress strip for clear next steps
+- Transaction verification status component
 - Security and fee transparency panel
-- Transaction verification component with status progression
-- Onboarding progress strip for conversion clarity
+- UI state updates after successful unlock
 
-## Core user flow
+### Creator-facing signals
+
+- Creator spotlight metrics section
+- Clear unlock pricing in feed and paywall
+- Foundation for pricing strategy and analytics features
+
+## Product flow
 
 1. Connect wallet
-2. Select a locked article
-3. Confirm sBTC payment in wallet
-4. Track transaction state
-5. Article unlock state updates in UI and history
+2. Choose article
+3. Confirm unlock payment in wallet
+4. Track transaction verification
+5. Access unlocked article and proof history
 
 ## Tech stack
 
-- React + TypeScript + Vite
+- React
+- TypeScript
+- Vite
 - Tailwind CSS v4
-- Stacks-compatible wallet integration (Hiro)
-- sBTC contract interactions via Stacks RPC and extension session APIs
+- Hiro wallet session API
+- Stacks testnet integration
 - Vercel deployment
 
 ## Project structure
 
-```text
-src/
-  components/
-    ArticleCard.tsx
-    ConnectWalletButton.tsx
-    PaywallModal.tsx
-    TransactionStatus.tsx
-  context/
-    WalletContext.tsx
-  utils/
-    contractInteractions.ts
-  types/
-    index.ts
-  App.tsx
-  index.css
-```
+| Path | Purpose |
+| --- | --- |
+| src/App.tsx | Main product shell and sections |
+| src/index.css | Global visual system and animations |
+| src/components/ | UI components for feed, wallet, paywall, status |
+| src/context/WalletContext.tsx | Wallet state and balance management |
+| src/utils/contractInteractions.ts | Unlock and tx status interactions |
+| src/types/index.ts | Shared application types |
 
-## Local development
+## Quick start
 
 ### Prerequisites
 
 - Node.js 18+
 - npm
-- Hiro Wallet browser extension (for unlock flow testing)
+- Hiro Wallet extension (for unlock flow testing)
 
-### Install dependencies
+### Install
 
 ```bash
 npm install
 ```
 
-### Start development server
+### Run local dev server
 
 ```bash
 npm run dev
@@ -98,23 +96,36 @@ npm run build
 npm run preview
 ```
 
-## Network and contracts
+## Network config
 
-- Current default: Stacks testnet
+- Default network: Stacks testnet
 - sBTC token contract: SP3DX3H4FEYZJZ586MFBS25ZM3FTRELAY2RYASF3.sbtc-token
 
-## Product roadmap
+## GitHub About content (copy and paste)
+
+### Description
+
+Bitcoin-native media protocol on Stacks where readers unlock premium content with sBTC and creators monetize with transparent onchain proof.
+
+### Website
+
+https://fluent-sage.vercel.app
+
+### Topics
+
+stacks, bitcoin, sbtc, web3, react, typescript, paywall, creator-economy, blockchain, vercel
+
+## Roadmap
 
 - Creator dashboard for publishing and pricing
-- Dynamic pricing recommendations based on conversion
-- Unlock bundles and access passes
-- Reader notifications and watchlists
-- Analytics for creators and platform operators
-- Mainnet-ready transaction and fee strategy
+- Conversion analytics and unlock funnel insights
+- Bundles and creator access passes
+- Reader alerts and watchlists
+- Mainnet-ready rollout plan
 
 ## Contributing
 
-Contributions are welcome. Open an issue for feature ideas, UX improvements, or integration fixes before submitting a PR.
+Open an issue first for product ideas, UI improvements, or integration bugs before sending a pull request.
 
 ## References
 
