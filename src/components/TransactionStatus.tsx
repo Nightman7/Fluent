@@ -60,62 +60,75 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
   const filledBlocks = Math.min(confirmations || Math.floor(elapsedSeconds / 1), 5);
 
   return (
-    <div className={`p-6 bg-space-grey border border-accent ${className}`}>
-      <div className="mb-4">
-        <h3 className="text-lg font-bold text-light-text font-space-grotesk mb-2">
+    <div className={`border border-border-gray bg-space-grey p-6 ${className}`}>
+      <div className="mb-6">
+        <h3 className="mb-2 font-space-grotesk text-sm font-semibold tracking-[0.18em] text-text-light-gray uppercase">
           Transaction Status
         </h3>
-        <p className="text-sm text-gray-400 break-all">{txId.substring(0, 16)}...</p>
+        <p className="break-all font-mono text-xs text-text-gray">{txId.substring(0, 24)}...</p>
       </div>
 
-      {/* Lo-fi block indicator */}
-      <div className="mb-6 flex gap-1">
+      <div className="mb-6 flex gap-1.5">
         {blocks.map((_, i) => (
           <div
             key={i}
-            className={`flex-1 h-8 transition-all ${
+            className={`h-10 flex-1 border transition-all ${
               i < filledBlocks
-                ? "bg-accent"
-                : "bg-dark-grey border border-accent"
+                ? "border-white bg-white"
+                : "border-border-gray bg-dark-grey/20"
             }`}
           />
         ))}
       </div>
 
-      {/* Status text */}
-      <div className="mb-4">
+      <div className="mb-4 space-y-2">
         {isProcessing && (
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-accent animate-pulse"></div>
-            <span className="text-light-text font-semibold">
-              Processing... ({elapsedSeconds}s)
-            </span>
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-2 h-2 bg-white animate-pulse"></div>
+              <span className="text-sm font-semibold text-white">
+                Processing
+              </span>
+            </div>
+            <p className="text-xs text-text-gray">
+              {elapsedSeconds}s elapsed
+            </p>
           </div>
         )}
         {isConfirmed && (
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-spike-blue"></div>
-            <span className="text-spike-blue font-semibold">
-              Confirmed ({confirmations} blocks)
-            </span>
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-white text-sm">✓</span>
+              <span className="text-sm font-semibold text-white">
+                Confirmed
+              </span>
+            </div>
+            <p className="text-xs text-text-gray">
+              {confirmations} blocks
+            </p>
           </div>
         )}
         {isFailed && (
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-red-500"></div>
-            <span className="text-red-400 font-semibold">Failed</span>
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-red-400 text-sm">✗</span>
+              <span className="text-red-400 font-semibold text-sm">Failed</span>
+            </div>
+            <p className="text-text-gray text-xs">
+              Please try again
+            </p>
           </div>
         )}
       </div>
 
       {/* Additional info */}
       {isProcessing && (
-        <p className="text-xs text-gray-400">
-          Nakamoto blocks (sub-5 seconds) · Est. confirmation in ~10s
+        <p className="border-t border-border-gray pt-4 text-xs text-text-gray">
+          Waiting for confirmation...
         </p>
       )}
       {isConfirmed && (
-        <p className="text-xs text-spike-blue">
+        <p className="border-t border-border-gray pt-4 text-xs text-white">
           ✓ Content unlocked. You can now read the full article.
         </p>
       )}

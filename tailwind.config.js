@@ -7,12 +7,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        accent: "#F2A900",
-        "space-grey": "#0f1419",
-        "dark-grey": "#1a1f2e",
-        "light-text": "#e4e6eb",
-        "bitcoin-orange": "#F2A900",
-        "spike-blue": "#3b82f6",
+        accent: "#ffffff",
+        "space-grey": "#000000",
+        "dark-grey": "#0a0a0a",
+        "light-text": "#ffffff",
+        "bitcoin-orange": "#ffffff",
+        "spike-blue": "#ffffff",
+        "border-gray": "#222222",
+        "text-gray": "#888888",
+        "text-light-gray": "#aaaaaa",
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],
@@ -20,6 +23,7 @@ export default {
       },
       borderRadius: {
         none: "0",
+        sm: "4px",
       },
     },
   },

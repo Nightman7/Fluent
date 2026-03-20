@@ -16,6 +16,8 @@ export interface Article {
   title: string;
   content?: string;
   author: string;
+  category?: string;
+  readTimeMinutes?: number;
   price: string; // in sBTC
   isLocked: boolean;
   isPurchased: boolean;

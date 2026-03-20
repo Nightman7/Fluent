@@ -1,83 +1,98 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+
+:root {
+  color: #f6f6f7;
+  background: #040404;
+  font-family: "IBM Plex Sans", sans-serif;
+}
 
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
-:root {
-  font-family: "Inter", sans-serif;
-  color: #e4e6eb;
-  background-color: #0f1419;
+html,
+body,
+#root {
+  min-height: 100%;
 }
 
 body {
   margin: 0;
-  padding: 0;
+  background:
+    radial-gradient(circle at 12% -10%, rgba(255, 255, 255, 0.1), transparent 32%),
+    radial-gradient(circle at 90% 0%, rgba(255, 255, 255, 0.06), transparent 28%),
+    #040404;
+  color: #f6f6f7;
+  font-family: "IBM Plex Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Utility classes for components */
-.btn-primary {
-  padding: 0.5rem 1rem;
-  background-color: #F2A900;
-  color: #0f1419;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
+#root {
+  min-height: 100vh;
 }
 
-.btn-primary:hover {
-  background-color: #F2A900;
+.flu-bg-gradient {
+  position: fixed;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.95;
+  background:
+    radial-gradient(44% 40% at 16% 20%, rgba(162, 223, 255, 0.18), transparent 72%),
+    radial-gradient(32% 35% at 82% 14%, rgba(203, 180, 255, 0.14), transparent 74%),
+    radial-gradient(42% 38% at 58% 80%, rgba(255, 255, 255, 0.09), transparent 76%);
+  filter: blur(12px) saturate(108%);
+  will-change: transform, opacity;
+  animation: fluentDrift 14s ease-in-out infinite alternate;
 }
 
-.btn-primary:active {
-  transform: scale(0.95);
-}
-
-.btn-secondary {
-  padding: 0.5rem 1rem;
-  background-color: #1a1f2e;
-  color: #e4e6eb;
-  font-weight: 600;
-  border: 1px solid #F2A900;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-secondary:hover {
-  background-color: #0f1419;
-}
-
-.btn-secondary:active {
-  transform: scale(0.95);
-}
-
-.card {
-  background-color: #1a1f2e;
-  border: 1px solid #F2A900;
-  padding: 1rem;
-  color: #e4e6eb;
-}
-
-.modal-overlay {
+.flu-bg-ambient {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.75);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.01) 36%,
+    rgba(140, 178, 255, 0.08) 100%
+  );
+  background-size: 180% 180%;
+  will-change: background-position, opacity;
+  animation: fluentShift 12s linear infinite;
 }
 
-.modal-content {
-  background-color: #0f1419;
-  border: 2px solid #F2A900;
-  padding: 2rem;
-  max-width: 28rem;
-  width: 100%;
+@keyframes fluentDrift {
+  0% {
+    transform: translate3d(-2.4%, -1.8%, 0) scale(1);
+    opacity: 0.82;
+  }
+  100% {
+    transform: translate3d(2.8%, 2.1%, 0) scale(1.06);
+    opacity: 1;
+  }
+}
+
+@keyframes fluentShift {
+  0% {
+    opacity: 0.72;
+    background-position: 0% 50%;
+  }
+  50% {
+    opacity: 1;
+    background-position: 100% 50%;
+  }
+  100% {
+    opacity: 0.76;
+    background-position: 0% 50%;
+  }
+}
+
+::selection {
+  background: #f6f6f7;
+  color: #050505;
 }
 
 .line-clamp-3 {
@@ -85,64 +100,4 @@ body {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
 }

@@ -32,21 +32,24 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
 
   if (user && displayBalance) {
     return (
-      <div className={`flex items-center gap-4 ${className}`}>
-        <div className="flex flex-col gap-1">
-          <div className="text-sm font-semibold text-accent">
+      <div className={`flex items-center gap-3 ${className}`}>
+        <div className="hidden min-w-[180px] border border-border-gray bg-dark-grey/60 px-4 py-3 text-right md:block">
+          <p className="mb-1 text-[10px] uppercase tracking-[0.2em] text-text-gray">
+            Wallet
+          </p>
+          <div className="text-sm font-semibold text-white">
             {user.stxAddress.substring(0, 8)}...{user.stxAddress.substring(user.stxAddress.length - 6)}
           </div>
           {showBalance && (
-            <div className="text-xs text-light-text">
-              <div>STX: {displayBalance.stx}</div>
-              <div>sBTC: {displayBalance.sBTC}</div>
+            <div className="mt-3 space-y-1 border-t border-border-gray pt-2 text-xs text-text-gray">
+              <div>STX {displayBalance.stx}</div>
+              <div>sBTC {displayBalance.sBTC}</div>
             </div>
           )}
         </div>
         <button
           onClick={disconnectWallet}
-          className="btn-secondary text-xs"
+          className="border border-border-gray px-4 py-2 text-sm font-medium text-white transition-colors hover:border-text-light-gray"
         >
           Disconnect
         </button>
@@ -58,7 +61,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
     <button
       onClick={handleConnect}
       disabled={isConnecting}
-      className={`btn-primary font-semibold transition-all ${
+      className={`border border-white bg-white px-5 py-2.5 text-sm font-semibold text-black transition-all hover:bg-transparent hover:text-white ${
         isConnecting ? "opacity-50 cursor-not-allowed" : ""
       } ${className}`}
     >

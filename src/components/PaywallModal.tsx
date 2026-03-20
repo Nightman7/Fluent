@@ -60,17 +60,34 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
     user && parseFloat(user.balances.sBTC) < parseFloat(price);
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <h2 className="text-2xl font-bold mb-4 font-space-grotesk text-accent">
-          Unlock Article
-        </h2>
-        
-        <div className="mb-6 border-b border-accent pb-4">
-          <h3 className="text-xl text-light-text mb-2">{articleTitle}</h3>
-          <p className="text-sm text-gray-400">Price to unlock</p>
-          <div className="text-3xl font-bold text-accent mt-2">
-            {price} sBTC
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md">
+      <div className="w-full max-w-xl border border-border-gray bg-space-grey p-7 md:p-10">
+        <div className="mb-8 flex items-start justify-between gap-4 border-b border-border-gray pb-6">
+          <div>
+            <p className="mb-3 text-[10px] uppercase tracking-[0.2em] text-text-gray">
+              Premium Unlock
+            </p>
+            <h2 className="font-space-grotesk text-2xl font-semibold tracking-[-0.03em] text-white md:text-3xl">
+              Unlock Article
+            </h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="border border-border-gray px-3 py-1 text-xs uppercase tracking-[0.18em] text-text-light-gray transition-colors hover:border-text-light-gray hover:text-white"
+          >
+            Close
+          </button>
+        </div>
+
+        <div className="mb-8 border border-border-gray bg-dark-grey/40 p-5">
+          <h3 className="mb-4 font-space-grotesk text-lg text-white">{articleTitle}</h3>
+          <div className="flex items-end justify-between gap-3">
+            <span className="text-xs uppercase tracking-[0.2em] text-text-gray">
+              Price to unlock
+            </span>
+            <span className="font-mono text-2xl font-semibold text-white">
+              {price} sBTC
+            </span>
           </div>
         </div>
 
@@ -79,43 +96,45 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
         )}
 
         {txStatus === "error" && (
-          <div className="mb-6 p-4 bg-red-900 border border-red-700 text-red-100 rounded-none">
-            <p className="font-semibold">Transaction Failed</p>
-            <p className="text-sm mt-1">Please try again</p>
+          <div className="mb-6 border border-red-500/50 bg-red-950/20 p-4 text-red-300">
+            <p className="text-sm font-semibold">Transaction Failed</p>
+            <p className="mt-1 text-xs">Please try again</p>
           </div>
         )}
 
         {!txStatus && (
           <>
-            <div className="mb-6 p-4 bg-dark-grey border border-accent">
-              <p className="text-sm text-gray-400">Your sBTC Balance</p>
-              <p className="text-2xl font-bold text-light-text mt-1">
+            <div className="mb-8 border border-border-gray bg-dark-grey/40 p-5">
+              <p className="mb-2 text-xs uppercase tracking-[0.2em] text-text-gray">
+                Your sBTC balance
+              </p>
+              <p className="text-2xl font-semibold text-white">
                 {user?.balances.sBTC || "0"} sBTC
               </p>
               {insufficientBalance && (
-                <p className="text-sm text-red-400 mt-2">
+                <p className="mt-3 text-xs font-semibold text-red-400">
                   Insufficient balance to unlock
                 </p>
               )}
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex gap-4">
               <button
                 onClick={onClose}
-                className="btn-secondary flex-1"
+                className="flex-1 border border-border-gray px-4 py-3 text-sm font-semibold text-white transition-colors hover:border-text-light-gray"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUnlock}
                 disabled={isProcessing || insufficientBalance || !user}
-                className={`btn-primary flex-1 ${
+                className={`flex-1 border border-white bg-white px-4 py-3 text-sm font-semibold text-black transition-all hover:bg-transparent hover:text-white ${
                   isProcessing || insufficientBalance || !user
                     ? "opacity-50 cursor-not-allowed"
                     : ""
                 }`}
               >
-                {isProcessing ? "Unlocking..." : "Unlock with Bitcoin"}
+                {isProcessing ? "Processing..." : "Unlock"}
               </button>
             </div>
           </>
